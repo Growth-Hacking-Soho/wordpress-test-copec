@@ -21,3 +21,6 @@ wp-content/themes/twentytwenty
 wp-content/themes/twentytwentyone
 wp-content/plugins/akismet
 wp-content/plugins/hello.php
+.idea
+wp-config.php
+wp-content/uploads
