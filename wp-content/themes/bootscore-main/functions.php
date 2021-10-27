@@ -10,7 +10,7 @@
 
 
 // WooCommerce
-require get_template_directory() . '/woocommerce/woocommerce-functions.php';
+//require get_template_directory() . '/woocommerce/woocommerce-functions.php';
 // WooCommerce END
 
 
