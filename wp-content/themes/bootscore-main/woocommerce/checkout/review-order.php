@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
 
         if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_checkout_cart_item_visible', true, $cart_item, $cart_item_key)) {
             ?>
-            <td class="item-image col-3 position-relative">
+            <td class="item-image border col-3 position-relative">
 
                 <?php
                 $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
@@ -80,10 +80,10 @@ defined('ABSPATH') || exit;
                 <div class="row g-3 align-items-center">
                     <div class="col-auto">
                         <label for="coupon_code" class="visually-hidden">Email</label>
-                    <input type="text" name="coupon_code" class="form-control" id="coupon_code" value="" placeholder="<?php esc_attr_e('Coupon code', 'woocommerce'); ?>"/>
+                    <input type="text" name="coupon_code" class="form-control" id="coupon_code" value="" placeholder="<?php esc_attr_e('Código de descuento', 'woocommerce'); ?>"/>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-outline-primary" name="apply_coupon" value="<?php esc_attr_e('Apply coupon', 'woocommerce'); ?>"><?php esc_attr_e('Apply coupon', 'woocommerce'); ?></button>
+                        <button type="submit" class="btn btn-outline-primary" style="background-color: #CCCCCC; border-color: #CCCCCC; color:white" name="apply_coupon" value="<?php esc_attr_e('Usar', 'woocommerce'); ?>"><?php esc_attr_e('Usar', 'woocommerce'); ?></button>
                     </div>
                     <?php do_action('woocommerce_cart_coupon'); ?>
                 </div>

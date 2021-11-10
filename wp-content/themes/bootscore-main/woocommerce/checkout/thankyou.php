@@ -39,20 +39,20 @@ defined('ABSPATH') || exit;
       </p>
 
     <?php else : ?>
-
-      <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), $order); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+      <h1 class="text-secondary-copec">Compra finalizada con éxito</h1>
+      <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Gracias, hemos recibido tu orden de compra.', 'woocommerce'), $order); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                                                     ?></p>
 
       <ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details alert alert-success">
 
         <li class="woocommerce-order-overview__order order">
-          <?php esc_html_e('Order number:', 'woocommerce'); ?>
+          <?php esc_html_e('Nº de orden', 'woocommerce'); ?>
           <strong><?php echo $order->get_order_number(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
                   ?></strong>
         </li>
 
         <li class="woocommerce-order-overview__date date">
-          <?php esc_html_e('Date:', 'woocommerce'); ?>
+          <?php esc_html_e('Fecha:', 'woocommerce'); ?>
           <strong><?php echo wc_format_datetime($order->get_date_created()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
                   ?></strong>
         </li>
@@ -73,7 +73,7 @@ defined('ABSPATH') || exit;
 
         <?php if ($order->get_payment_method_title()) : ?>
           <li class="woocommerce-order-overview__payment-method method">
-            <?php esc_html_e('Payment method:', 'woocommerce'); ?>
+            <?php esc_html_e('Método de pago:', 'woocommerce'); ?>
             <strong><?php echo wp_kses_post($order->get_payment_method_title()); ?></strong>
           </li>
         <?php endif; ?>
@@ -87,7 +87,7 @@ defined('ABSPATH') || exit;
 
   <?php else : ?>
 
-    <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+    <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Gracias, hemos recibido tu orden de compra.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                                                   ?></p>
 
   <?php endif; ?>

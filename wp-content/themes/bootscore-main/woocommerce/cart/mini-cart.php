@@ -43,7 +43,7 @@ do_action('woocommerce_before_mini_cart'); ?>
           <div class="row">
 
             <div class="item-image col-3">
-              <div class="mt-1">
+              <div class="mt-1 border">
                 <?php if (empty($product_permalink)) : ?>
                   <?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
                   ?>
@@ -67,11 +67,32 @@ do_action('woocommerce_before_mini_cart'); ?>
                   </a></strong>
               <?php endif; ?>
               <div class="item-quantity">
-                <?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                <?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
-                <?php echo apply_filters('woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf('%s &times; %s', $cart_item['quantity'], $product_price) . '</span>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                <?php echo apply_filters('woocommerce_widget_cart_item_quantity', '<span class="quantity qty-mincart">' . $product_price . '</span>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
               </div>
+                <td class="product-quantity" data-title="<?php esc_attr_e('Quantity', 'woocommerce'); ?>">
+		            <?php
+		            if ($_product->is_sold_individually()) {
+			            $product_quantity = sprintf('1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key);
+		            } else {
+			            $product_quantity = woocommerce_quantity_input(
+				            array(
+					            'input_name'   => "cart[{$cart_item_key}][qty]",
+					            'input_value'  => $cart_item['quantity'],
+					            'max_value'    => $_product->get_max_purchase_quantity(),
+					            'min_value'    => '0',
+					            'product_name' => $_product->get_name(),
+				            ),
+				            $_product,
+				            false
+			            );
+		            }
+
+		            echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item); // PHPCS: XSS ok.
+		            ?>
+                </td>
             </div>
 
 
@@ -80,7 +101,7 @@ do_action('woocommerce_before_mini_cart'); ?>
               <?php echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 'woocommerce_cart_item_remove_link',
                 sprintf(
-                  '<a href="%s" class="remove_from_cart_button text-danger aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s"><i class="far fa-trash-alt"></i></a>',
+                  '<a href="%s" class="remove_from_cart_button text-danger aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s"><i class="fas fa-times fa-gray"></i></a>',
                   esc_url(wc_get_cart_remove_url($cart_item_key)),
                   esc_attr__('Remove this item', 'woocommerce'),
                   esc_attr($product_id),
@@ -104,24 +125,21 @@ do_action('woocommerce_before_mini_cart'); ?>
     ?>
   </div>
 
-  <div class="cart-footer bg-light text-center position-absolute bottom-0 p-3 w-100">
+  <div class="cart-footer text-center position-absolute bottom-0 bg-cart-gray w-100">
 
-    <p class="woocommerce-mini-cart__total total">
-      <?php
-      /**
-       * Hook: woocommerce_widget_shopping_cart_total.
-       *
-       * @hooked woocommerce_widget_shopping_cart_subtotal - 10
-       */
-      do_action('woocommerce_widget_shopping_cart_total');
-      ?>
-    </p>
+    <div class="container">
+        <hr class="solid">
+	    <?php do_action('woocommerce_review_order_before_order_total'); ?>
+        <div class="row">
+            <div class="col" style="padding-bottom: 5%;"><?php esc_html_e('Subtotal', 'woocommerce'); ?></div>
+            <div class="col" style="padding-bottom: 5%;"><?php wc_cart_totals_order_total_html(); ?></div>
+        </div>
+    </div>
 
-    <p class="text-muted small shipping-text"><?php esc_html_e('To find out your shipping cost, please proceed to checkout.', 'bootscore'); ?></p>
 
     <?php do_action('woocommerce_widget_shopping_cart_before_buttons'); ?>
 
-    <div class="woocommerce-mini-cart__buttons buttons"><?php do_action('woocommerce_widget_shopping_cart_buttons'); ?></div>
+    <div class="woocommerce-mini-cart__buttons buttons px-4"><?php do_action('woocommerce_widget_shopping_cart_buttons'); ?></div>
 
     <?php do_action('woocommerce_widget_shopping_cart_after_buttons'); ?>
 

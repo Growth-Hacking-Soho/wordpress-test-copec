@@ -6,6 +6,7 @@
 // JS for AJAX Add to Cart handling
 function bootscore_product_page_ajax_add_to_cart_js() {
 ?>
+
   <script type="text/javascript" charset="UTF-8">
     jQuery(function($) {
 
