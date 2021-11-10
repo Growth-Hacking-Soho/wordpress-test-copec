@@ -17,13 +17,13 @@ get_header();
 ?>
 
 <div id="content" class="site-content container py-5 mt-5">
-  <div id="primary" class="content-area">
+  <div id="primary" class="mt-5 content-area">
 
     <!-- Hook to add something nice -->
     <?php bs_after_primary(); ?>
 
     <div class="row">
-      <div class="col-md-8 col-xxl-9">
+      <div class="col-md-12 col-xxl-12">
 
         <main id="main" class="site-main">
 
