@@ -10,7 +10,7 @@
 
 
 // WooCommerce
-//require get_template_directory() . '/woocommerce/woocommerce-functions.php';
+require get_template_directory() . '/woocommerce/woocommerce-functions.php';
 // WooCommerce END
 
 
@@ -19,8 +19,9 @@ if (!function_exists('register_navwalker')) :
   function register_navwalker() {
     require_once('inc/class-bootstrap-5-navwalker.php');
     // Register Menus
-    register_nav_menu('main-menu', 'Main menu');
-    register_nav_menu('footer-menu', 'Footer menu');
+	  register_nav_menu('main-menu', 'Main menu');
+	  register_nav_menu('main-menu-top', 'Main menu TOP');
+	  register_nav_menu('footer-menu', 'Footer menu');
   }
 endif;
 add_action('after_setup_theme', 'register_navwalker');
@@ -266,6 +267,9 @@ function bootscore_scripts() {
   // Fontawesome
   wp_enqueue_style('fontawesome', get_template_directory_uri() . '/css/lib/fontawesome.min.css', array(), $modificated_fontawesomeCss);
 
+	// Custom CSS for this theme
+	wp_enqueue_style('theme-custom', get_template_directory_uri() . '/css/theme-copec.css', array(), $modificated_fontawesomeCss);
+
   // Bootstrap JS
   wp_enqueue_script('bootstrap', get_template_directory_uri() . '/js/lib/bootstrap.bundle.min.js', array(), $modificated_bootstrapJs, true);
 
@@ -365,7 +369,7 @@ if (!function_exists('bootscore_pagination')) :
       echo '</ul>';
       echo '</nav>';
       // Uncomment this if you want to show [Page 2 of 30]
-      // echo '<div class="pagination-info mb-5 text-center">[ <span class="text-muted">Page</span> '.$paged.' <span class="text-muted">of</span> '.$pages.' ]</div>';	 	
+      echo '<div class="pagination-info mb-5 text-center">[ <span class="text-muted">Page</span> '.$paged.' <span class="text-muted">of</span> '.$pages.' ]</div>';
     }
   }
 
@@ -478,3 +482,14 @@ add_filter('gutenberg_use_widgets_block_editor', '__return_false');
 // Disables the block editor from managing widgets.
 add_filter('use_widgets_block_editor', '__return_false');
 // Disable Gutenberg blocks in widgets (WordPress 5.8) END
+
+// remove unused fields from checkout
+add_filter( 'woocommerce_checkout_fields' , 'quadlayers_remove_checkout_fields' );
+
+function quadlayers_remove_checkout_fields( $fields ) {
+
+    unset($fields['billing']['billing_postcode']);
+    unset($fields['order']['order_comments']);
+
+    return $fields;
+}
