@@ -255,8 +255,13 @@ function bootscore_scripts() {
   $modificated_fontawesomeCss = date('YmdHi', filemtime(get_template_directory() . '/css/lib/fontawesome.min.css'));
   $modificated_bootstrapJs = date('YmdHi', filemtime(get_template_directory() . '/js/lib/bootstrap.bundle.min.js'));
   $modificated_themeJs = date('YmdHi', filemtime(get_template_directory() . '/js/theme.js'));
+  $modificated_owlCss = date('YmdHi', filemtime(get_template_directory() . '/css/lib/owl.carousel.min.css'));
+  $modificated_owlJs = date('YmdHi', filemtime(get_template_directory() . '/js/lib/owl.carousel.js'));
 
-  // Style CSS
+	// Owl CSS
+	wp_enqueue_style('owl-style', get_template_directory_uri() . '/css/lib/owl.carousel.min.css', array(), $modificated_owlCss);
+
+	// Style CSS
   wp_enqueue_style('bootscore-style', get_stylesheet_uri(), array(), $modificated_styleCss);
 
   // bootScore
@@ -273,7 +278,10 @@ function bootscore_scripts() {
   // Bootstrap JS
   wp_enqueue_script('bootstrap', get_template_directory_uri() . '/js/lib/bootstrap.bundle.min.js', array(), $modificated_bootstrapJs, true);
 
-  // Theme JS
+	// Owl JS
+	wp_enqueue_script('owl-script', get_template_directory_uri() . '/js/lib/owl.carousel.js', array(), $modificated_owlJs, true);
+
+	// Theme JS
   wp_enqueue_script('bootscore-script', get_template_directory_uri() . '/js/theme.js', array(), $modificated_themeJs, true);
 
   if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -488,8 +496,45 @@ add_filter( 'woocommerce_checkout_fields' , 'quadlayers_remove_checkout_fields' 
 
 function quadlayers_remove_checkout_fields( $fields ) {
 
-    unset($fields['billing']['billing_postcode']);
+	unset($fields['billing']['billing_postcode']);
+	unset($fields['billing']['billing_country']);
+	unset($fields['billing']['billing_state']);
+	unset($fields['billing']['billing_city']);
     unset($fields['order']['order_comments']);
 
     return $fields;
+}
+
+add_filter('woocommerce_default_address_fields', 'override_default_address_checkout_fields', 20, 1);
+function override_default_address_checkout_fields( $address_fields ) {
+	$address_fields['first_name']['placeholder'] = 'Nombre';
+	$address_fields['last_name']['placeholder'] = 'Apellido';
+	$address_fields['address_1']['placeholder'] = 'Dirección';
+	$address_fields['address_2']['placeholder'] = 'Departamento, local, etc. (Opcional)';
+	return $address_fields;
+}
+
+add_filter( 'woocommerce_checkout_fields' , 'override_billing_checkout_fields', 20, 1 );
+function override_billing_checkout_fields( $fields ) {
+	$fields['billing']['billing_phone']['placeholder'] = 'Teléfono';
+	$fields['billing']['billing_email']['placeholder'] = 'Correo electrónico';
+	$fields['billing']['billing_company']['placeholder'] = 'Empresa (Opcional)';
+	return $fields;
+}
+
+// WooCommerce Checkout Fields Hook
+add_filter('woocommerce_checkout_fields','custom_wc_checkout_fields_no_label');
+
+// Our hooked in function - $fields is passed via the filter!
+// Action: remove label from $fields
+function custom_wc_checkout_fields_no_label($fields) {
+	// loop by category
+	foreach ($fields as $category => $value) {
+		// loop by fields
+		foreach ($fields[$category] as $field => $property) {
+			// remove label property
+			unset($fields[$category][$field]['label']);
+		}
+	}
+	return $fields;
 }

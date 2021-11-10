@@ -193,7 +193,7 @@
 
         <!-- offcanvas user -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-user">
-            <div class="offcanvas-header bg-light">
+            <div class="offcanvas-header bg-cart-gray">
                 <span class="h5 mb-0"><?php esc_html_e( 'Account', 'bootscore' ); ?></span>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -206,13 +206,13 @@
 
         <!-- offcanvas cart -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-cart">
-            <div class="offcanvas-header bg-light">
-                <span class="h5 mb-0"><?php esc_html_e( 'Cart', 'bootscore' ); ?></span>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="offcanvas-header nav-bg-copec">
+                <i class="fas fas fa-shopping-cart fa-2x fa-pull-left fa-white"></i><span class="h5 mb-0 text-white"><?php esc_html_e( 'Carrito', 'bootscore' ); ?></span>
+                <button type="button" class="btn-close text-reset text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body p-0">
                 <div class="cart-loader bg-white position-absolute end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
-                    <div class="loader-icon ">
+                    <div class="loader-icon">
                         <div class="spinner-border text-primary"></div>
                     </div>
                 </div>
