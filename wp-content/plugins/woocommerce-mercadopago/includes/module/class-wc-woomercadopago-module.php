@@ -91,8 +91,6 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 			$this->load_stock_manager();
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_css' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'load_global_css' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'load_global_css' ) );
 
 			add_filter( 'woocommerce_available_payment_gateways', array( $this, 'filter_payment_method_by_shipping' ) );
 			add_filter( 'plugin_action_links_' . WC_MERCADOPAGO_BASENAME, array( $this, 'woomercadopago_settings_link' ) );
@@ -242,7 +240,6 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 		include_once dirname( __FILE__ ) . '/preference/class-wc-woomercadopago-preference-ticket.php';
 		include_once dirname( __FILE__ ) . '/preference/class-wc-woomercadopago-preference-pix.php';
 		include_once dirname( __FILE__ ) . '/preference/analytics/class-wc-woomercadopago-preferenceanalytics.php';
-		include_once dirname( __FILE__ ) . '/preference/class-wc-woomercadopago-preference-custom-wallet-button.php';
 	}
 
 	/**
@@ -282,22 +279,14 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 	}
 
 	/**
-	 * Get Suffix to get minify files
 	 *
-	 * @return String
-	 */
-	private function get_suffix() {
-		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	}
-
-	/**
 	 * Load Admin Css
 	 *
 	 * @return void
 	 */
 	public function load_admin_css() {
 		if ( is_admin() ) {
-			$suffix = $this->get_suffix();
+			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 			wp_enqueue_style(
 				'woocommerce-mercadopago-basic-config-styles',
@@ -306,22 +295,6 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 				WC_WooMercadoPago_Constants::VERSION
 			);
 		}
-	}
-
-	/**
-	 * Load global CSS
-	 *
-	 * @return void
-	 */
-	public function load_global_css() {
-		$suffix = $this->get_suffix();
-
-		wp_enqueue_style(
-			'woocommerce-mercadopago-global-css',
-			plugins_url( '../assets/css/global' . $suffix . '.css', plugin_dir_path( __FILE__ ) ),
-			array(),
-			WC_WooMercadoPago_Constants::VERSION
-		);
 	}
 
 	/**
@@ -388,43 +361,36 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 				'help'      => 'ayuda',
 				'sufix_url' => 'com.ar/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 			'BR' => array( // Brazil.
 				'help'      => 'ajuda',
 				'sufix_url' => 'com.br/',
 				'translate' => 'pt',
-				'term_conditition' => '/termos-e-politicas_194',
 			),
 			'CL' => array( // Chile.
 				'help'      => 'ayuda',
 				'sufix_url' => 'cl/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 			'CO' => array( // Colombia.
 				'help'      => 'ayuda',
 				'sufix_url' => 'com.co/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 			'MX' => array( // Mexico.
 				'help'      => 'ayuda',
 				'sufix_url' => 'com.mx/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 			'PE' => array( // Peru.
 				'help'      => 'ayuda',
 				'sufix_url' => 'com.pe/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 			'UY' => array( // Uruguay.
 				'help'      => 'ayuda',
 				'sufix_url' => 'com.uy/',
 				'translate' => 'es',
-				'term_conditition' => '/terminos-y-politicas_194',
 			),
 		);
 
@@ -447,24 +413,6 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 		}
 
 		return $wc_country;
-	}
-
-	/**
-	 *
-	 * Define terms and conditions link
-	 *
-	 * @return string
-	 */
-	public static function mp_define_terms_and_conditions() {
-		$links_mp       = self::define_link_country();
-		$link_prefix_mp = 'https://www.mercadopago.';
-
-	return array (
-		'text_prefix'                           => __( 'By continuing, you agree to our ', 'woocommerce-mercadopago' ),
-		'link_terms_and_conditions' => $link_prefix_mp . $links_mp['sufix_url'] . $links_mp['help'] . $links_mp['term_conditition'],
-		'text_suffix'                               => __( 'Terms and Conditions', 'woocommerce-mercadopago' ),
-	);
-
 	}
 
 	/**
@@ -621,7 +569,7 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 		$is_subscription = false;
 		if ( 1 === count( $items ) ) {
 			foreach ( $items as $cart_item_key => $cart_item ) {
-				$is_recurrent = ( is_object( $cart_item ) && method_exists( $cart_item, 'get_meta' ) ) ?
+				$is_recurrent = ( method_exists( $cart_item, 'get_meta' ) ) ?
 					$cart_item->get_meta( '_used_gateway' ) : get_post_meta( $cart_item['product_id'], '_mp_recurring_is_recurrent', true );
 				if ( 'yes' === $is_recurrent ) {
 					$is_subscription = true;
@@ -723,19 +671,4 @@ class WC_WooMercadoPago_Module extends WC_WooMercadoPago_Configs {
 		}
 		return $mobile;
 	}
-
-	/**
-	 *
-	 * Get notification type by the payment class
-	 *
-	 * @return string
-	 */
-	public static function get_notification_type( $notification_type ) {
-		$types['WC_WooMercadoPago_Basic_Gateway']  = 'ipn';
-		$types['WC_WooMercadoPago_Custom_Gateway'] = 'webhooks';
-		$types['WC_WooMercadoPago_Pix_Gateway']    = 'webhooks';
-		$types['WC_WooMercadoPago_Ticket_Gateway'] = 'webhooks';
-		return $types[$notification_type];
-	}
-
 }

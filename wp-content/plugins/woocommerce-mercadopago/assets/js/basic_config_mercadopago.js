@@ -41,34 +41,17 @@ window.addEventListener('load', function() {
     table[k].id = 'mp_table_' + k;
   }
 
-  // Add max length to title input
-
-  let titleInput = this.document.querySelectorAll('.limit-title-max-length');
-
-  titleInput.forEach(
-    (element) => {
-      element.setAttribute('maxlength', '65');
-    }
-  );
-
-  // Remove title and description row if necessary.
-
-  document.querySelectorAll('.hidden-field-mp-title').forEach(
-    (element) => {
-      element.closest('tr').style.display = 'none';
-    }
-  );
-
-  document.querySelectorAll('.hidden-field-mp-desc').forEach(
-    (element) => {
-      element.closest('tr').style.display = 'none';
-    }
-  );
+  // Remove title and description label necessary for custom
+  document.querySelector('.hidden-field-mp-title').setAttribute('type', 'hidden');
+  document.querySelector('.hidden-field-mp-desc').setAttribute('type', 'hidden');
+  var removeLabel = document.querySelectorAll('#mp_table_0');
+  removeLabel[0].children[0].children[0].style.display = 'none';
+  removeLabel[0].children[0].children[1].style.display = 'none';
 
   //clone save button
   var cloneSaveButton = document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_btn_save');
-  if (document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_homolog_title') !== null || document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_credential_description_test') !== null) {
-    document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_mode_alert').append(document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_btn_save'));
+  if (document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_homolog_title') !== null || document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_credential_description_prod') !== null) {
+    document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_credential_description_prod').nextElementSibling.append(cloneSaveButton.cloneNode(true));
   }
 
   if (document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_homolog_title') !== null || document.getElementById('woocommerce_woo-mercado-pago-basic_checkout_options_title') !== null) {
@@ -275,5 +258,4 @@ window.completeOfflineCheckboxMP = function () {
     }
   }
 };
-
 });

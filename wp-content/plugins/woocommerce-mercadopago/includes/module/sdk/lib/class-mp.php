@@ -128,6 +128,7 @@ class MP {
 	 * @throws WC_WooMercadoPago_Exception Get Access Token Exception.
 	 */
 	public function get_access_token() {
+
 		if ( isset( $this->ll_access_token ) && ! is_null( $this->ll_access_token ) ) {
 			return $this->ll_access_token;
 		}
@@ -169,12 +170,11 @@ class MP {
 	 * @return array|null
 	 * @throws WC_WooMercadoPago_Exception Search Payment V1 Exception.
 	 */
-	public function search_payment_v1( $id, $token = null ) {
+	public function search_payment_v1( $id ) {
+
 		$request = array(
 			'uri'    => '/v1/payments/' . $id,
-			'headers' => array(
-				'Authorization' => 'Bearer ' . ( is_null($token) ? $this->get_access_token() : $token ),
-			)
+			'params' => array( 'access_token' => $this->get_access_token() ),
 		);
 
 		return MP_Rest_Client::get( $request );
@@ -588,19 +588,6 @@ class MP {
 	 * @throws WC_WooMercadoPago_Exception Get payment method exception.
 	 */
 	public function get_payment_methods( $access_token ) {
-		$key = sprintf('%s%s', __FUNCTION__, $access_token);
-
-		$cache = $this->get_cache_response($key);
-
-		if ( ! empty($cache) ) {
-			$this->debug_mode_log(
-				'mercadopago_requests',
-				__FUNCTION__,
-				__('Response from cache', 'woocommerce-mercadopago')
-			);
-			return $cache;
-		}
-
 		$request = array(
 			'headers' => array(
 				'Authorization' => 'Bearer ' . $access_token,
@@ -618,8 +605,6 @@ class MP {
 
 		asort( $response );
 
-		$this->set_cache_response($key, $response);
-
 		return $response;
 	}
 
@@ -632,19 +617,6 @@ class MP {
 	 * @throws WC_WooMercadoPago_Exception Get credentials wrapper.
 	 */
 	public function get_credentials_wrapper( $access_token = null, $public_key = null ) {
-		$key = sprintf('%s%s%s', __FUNCTION__, $access_token, $public_key);
-
-		$cache = $this->get_cache_response($key);
-
-		if ( ! empty($cache) ) {
-			$this->debug_mode_log(
-				'mercadopago_requests',
-				__FUNCTION__,
-				__('Response from cache', 'woocommerce-mercadopago')
-			);
-			return $cache;
-		}
-
 		$request = array(
 			'uri' => '/plugins-credentials-wrapper/credentials',
 		);
@@ -660,12 +632,11 @@ class MP {
 		$response = MP_Rest_Client::get( $request );
 
 		if ( $response['status'] > 202 ) {
-			$log = WC_WooMercadoPago_Log::init_mercado_pago_log( __FUNCTION__ );
-			$log->write_log( 'API GET Credentials Wrapper error:', wp_json_encode($response) );
+			$log           = WC_WooMercadoPago_Log::init_mercado_pago_log( 'getCredentialsWrapper' );
+			$error_message = $response['response'] ? $response['response']['message'] : '';
+			$log->write_log( 'API GET Credentials Wrapper error:', $error_message );
 			return false;
 		}
-
-		$this->set_cache_response($key, $response['response']);
 
 		return $response['response'];
 	}
@@ -758,7 +729,7 @@ class MP {
 	/**
 	 * Delete call
 	 *
-	 * @param array|string      $request Request.
+	 * @param array      $request Request.
 	 * @param null|array $params Params.
 	 * @return array|null
 	 * @throws WC_WooMercadoPago_Exception Delete exception.
@@ -786,7 +757,7 @@ class MP {
 	 * @param null|WC_WooMercadoPago_Payment_Abstract $payment Payment class.
 	 */
 	public function set_payment_class( $payment = null ) {
-		if ( ! is_null( $payment ) ) {
+		if ( ! empty( $payment ) ) {
 			$this->payment_class = get_class( $payment );
 		}
 	}
@@ -798,47 +769,6 @@ class MP {
 	 */
 	public function get_payment_class() {
 		return $this->payment_class;
-	}
-
-
-	/**
-	 * Get response from cache
-	 *
-	 * @param $key
-	 *
-	 * @return mixed
-	 */
-	protected function get_cache_response( $key ) {
-		$key = sha1($key);
-
-		return get_transient($key);
-	}
-
-	/**
-	 * Save a response to cache
-	 *
-	 * @param $key
-	 * @param $value
-	 * @param int $ttl
-	 */
-	protected function set_cache_response( $key, $value, $ttl = MINUTE_IN_SECONDS ) {
-		$key = sha1($key);
-
-		set_transient($key, $value, $ttl);
-	}
-
-	/**
-	 * Set log when WordPress in Debug Mode
-	 *
-	 * @param $log_id
-	 * @param $function
-	 * @param $message
-	 */
-	protected function debug_mode_log( $log_id, $function, $message ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$log = WC_WooMercadoPago_Log::init_mercado_pago_log( $log_id );
-			$log->write_log( $function, $message );
-		}
 	}
 
 }

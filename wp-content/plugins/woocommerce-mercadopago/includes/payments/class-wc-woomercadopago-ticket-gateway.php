@@ -26,17 +26,16 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 	 * @throws WC_WooMercadoPago_Exception Load payment exception.
 	 */
 	public function __construct() {
-		$this->id          = self::ID;
-		$this->description = __( 'Accept cash payments within the custom checkout and expand your customers purchase options.', 'woocommerce-mercadopago' );
-		$this->title       = __( 'Pay with cash', 'woocommerce-mercadopago' );
+		$this->id = self::ID;
 
 		if ( ! $this->validate_section() ) {
 			return;
 		}
 
+		$this->description        = __( 'Accept cash payments within the custom checkout and expand your customers purchase options.', 'woocommerce-mercadopago' );
 		$this->form_fields        = array();
 		$this->method_title       = __( 'Mercado Pago - Custom Checkout', 'woocommerce-mercadopago' );
-		$this->title              = $this->get_option_mp( 'title', __( 'Pay with cash', 'woocommerce-mercadopago' ) );
+		$this->title              = __( 'Pay with cash', 'woocommerce-mercadopago' );
 		$this->method_description = $this->description;
 		$this->coupon_mode        = $this->get_option_mp( 'coupon_mode', 'no' );
 		$this->stock_reduce_mode  = $this->get_option_mp( 'stock_reduce_mode', 'no' );
@@ -68,13 +67,6 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 				array(),
 				WC_WooMercadoPago_Constants::VERSION,
 				false
-			);
-			wp_enqueue_script(
-				'woocommerce-mercadopago-credentials',
-				plugins_url( '../assets/js/validate-credentials' . $suffix . '.js', plugin_dir_path( __FILE__ ) ),
-				array(),
-				WC_WooMercadoPago_Constants::VERSION,
-				true
 			);
 		}
 
@@ -119,6 +111,7 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 	public function get_fields_sequence() {
 		return array(
 			// Necessary to run.
+			'title',
 			'description',
 			// Checkout de pagos con dinero en efectivo<br> Aceptá pagos al instante y maximizá la conversión de tu negocio.
 			'checkout_ticket_header',
@@ -129,24 +122,20 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 			'checkout_btn_save',
 			// Carga tus credenciales.
 			'checkout_credential_title',
+			'checkout_credential_mod_test_title',
+			'checkout_credential_mod_test_description',
+			'checkout_credential_mod_prod_title',
+			'checkout_credential_mod_prod_description',
+			'checkout_credential_prod',
 			'checkout_credential_link',
-			'checkout_credential_title_prod',
-			'checkout_credential_description_prod',
-			'_mp_public_key_prod',
-			'_mp_access_token_prod',
 			'checkout_credential_title_test',
 			'checkout_credential_description_test',
 			'_mp_public_key_test',
 			'_mp_access_token_test',
-			'checkout_mode_title',
-			'checkout_subtitle_checkout_mode',
-			'checkbox_checkout_test_mode',
-			'checkbox_checkout_production_mode',
-			'checkout_mode_alert',
-			// Everything ready for the takeoff of your sales?
-			'checkout_ready_title',
-			'checkout_ready_description',
-			'checkout_ready_description_link',
+			'checkout_credential_title_prod',
+			'checkout_credential_description_prod',
+			'_mp_public_key_prod',
+			'_mp_access_token_prod',
 			// No olvides de homologar tu cuenta.
 			'checkout_homolog_title',
 			'checkout_homolog_subtitle',
@@ -166,7 +155,6 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 			'checkout_payments_subtitle',
 			'checkout_ticket_payments_description',
 			'enabled',
-			'title',
 			WC_WooMercadoPago_Helpers_CurrencyConverter::CONFIG_KEY,
 			'field_ticket_payments',
 			'date_expiration',
@@ -182,6 +170,10 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 			'checkout_support_description',
 			'checkout_support_description_link',
 			'checkout_support_problem',
+			// Everything ready for the takeoff of your sales?
+			'checkout_ready_title',
+			'checkout_ready_description',
+			'checkout_ready_description_link',
 		);
 	}
 
@@ -410,12 +402,6 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 		}
 
 		$parameters = array(
-			'checkout_alert_test_mode' => $this->is_production_mode()
-			? ''
-			: $this->checkout_alert_test_mode_template(
-				__( 'Offline Methods in Test Mode', 'woocommerce-mercadopago' ),
-				__( 'You can test the flow to generate an invoice, but you cannot finalize the payment.', 'woocommerce-mercadopago' )
-			),
 			'amount'               => $amount,
 			'payment_methods'      => $this->activated_payment,
 			'site_id'              => $this->get_option_mp( '_site_id_v1' ),
@@ -449,7 +435,6 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 			'images_path'          => plugins_url( '../assets/images/', plugin_dir_path( __FILE__ ) ),
 		);
 
-		$parameters = array_merge($parameters, WC_WooMercadoPago_Payment_Abstract::mp_define_terms_and_conditions());
 		wc_get_template( 'checkout/ticket-checkout.php', $parameters, 'woo/mercado/pago/module/', WC_WooMercadoPago_Module::get_templates_path() );
 	}
 
@@ -468,9 +453,7 @@ class WC_WooMercadoPago_Ticket_Gateway extends WC_WooMercadoPago_Payment_Abstrac
 		$order  = wc_get_order( $order_id );
 		$amount = $this->get_order_total();
 		if ( method_exists( $order, 'update_meta_data' ) ) {
-			$order->update_meta_data( 'is_production_mode', $this->get_option_mp( 'checkbox_checkout_production_mode' ) );
 			$order->update_meta_data( '_used_gateway', get_class( $this ) );
-
 			if ( ! empty( $this->gateway_discount ) ) {
 				$discount = $amount * ( $this->gateway_discount / 100 );
 				$order->update_meta_data( 'Mercado Pago: discount', __( 'discount of', 'woocommerce-mercadopago' ) . ' ' . $this->gateway_discount . '% / ' . __( 'discount of', 'woocommerce-mercadopago' ) . ' = ' . $discount );

@@ -14,10 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="mp-panel-checkout">
-	<?php
-		// @codingStandardsIgnoreLine
-		echo $checkout_alert_test_mode;
-	?>
 	<div class="mp-row-checkout">
 	<?php if ( 0 !== (int) $credito ) : ?>
 	<div id="framePayments" class="mp-col-md-12">
@@ -78,11 +74,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php endif; ?>
 
 	</div>
-</div>
-<!-- Terms and conditions link at checkout -->
-<div>       
-	<p class="mp-terms-and-conditions"> 
-		<?php echo esc_html($text_prefix); ?> 		
-		<a target="_blank" href="<?php echo esc_html($link_terms_and_conditions); ?>">  <?php echo esc_html($text_suffix); ?> </a>
-	</p> 		
 </div>

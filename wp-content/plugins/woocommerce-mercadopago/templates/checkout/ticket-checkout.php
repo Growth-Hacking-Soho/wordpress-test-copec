@@ -13,12 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
+
 <div class="mp-panel-custom-checkout">
-	<?php
-		// @codingStandardsIgnoreLine
-		echo $checkout_alert_test_mode;
-	?>
 	<div class="mp-row-checkout">
+
 		<!-- Cupom mode, creat a campaign on mercado pago -->
 		<?php if ( 'yes' === $coupon_mode ) : ?>
 			<div  id="mercadopago-form-coupon-ticket" class="mp-col-md-12 mp-pb-20">
@@ -370,13 +368,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 	</div>
-</div>
-<!-- Terms and conditions link at checkout -->
-<div>       
-	<p class="mp-terms-and-conditions"> 
-		<?php echo esc_html($text_prefix); ?> 		
-		<a target="_blank" href="<?php echo esc_html($link_terms_and_conditions); ?>">  <?php echo esc_html($text_suffix); ?> </a>
-	</p> 		
 </div>
 
 <script type="text/javascript">

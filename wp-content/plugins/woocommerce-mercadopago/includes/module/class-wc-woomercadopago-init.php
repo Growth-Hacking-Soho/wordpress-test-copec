@@ -62,17 +62,6 @@ class WC_WooMercadoPago_Init {
 	}
 
 	/**
-	 * GD validation
-	 */
-	public static function wc_mercado_pago_notify_gd_error() {
-		$type    = 'error';
-		$message = __( 'Mercado Pago Error: PHP Extension GD is not installed. Installation of GD extension is required to send QR Code Pix by email.', 'woocommerce-mercadopago' );
-		// @todo using escaping function
-		// @codingStandardsIgnoreLine
-		echo WC_WooMercadoPago_Notices::get_alert_frame( $message, $type );
-	}
-
-	/**
 	 * Summary: Places a warning error to notify user that WooCommerce is missing.
 	 * Description: Places a warning error to notify user that WooCommerce is missing.
 	 */
@@ -129,16 +118,6 @@ class WC_WooMercadoPago_Init {
 	}
 
 	/**
-	 * Handle saved cards notice
-	*/
-	public static function mercadopago_handle_saved_cards_notice() {
-		$must_not_show_review = (int) get_option( '_mp_dismiss_saved_cards_notice' );
-		if ( ! isset( $must_not_show_review ) || $must_not_show_review ) {
-			update_option( '_mp_dismiss_saved_cards_notice', 0, true );
-		}
-	}
-
-	/**
 	 * Update plugin version in db
 	 */
 	public static function update_plugin_version() {
@@ -156,9 +135,6 @@ class WC_WooMercadoPago_Init {
 		self::woocommerce_mercadopago_load_plugin_textdomain();
 		require_once dirname( __FILE__ ) . '/config/class-wc-woomercadopago-constants.php';
 		require_once dirname( __FILE__ ) . '../../admin/notices/class-wc-woomercadopago-notices.php';
-		require_once dirname( __FILE__ ) . '../../admin/notices/class-wc-woomercadopago-saved-cards.php';
-		require_once dirname( __FILE__ ) . '../../admin/hooks/class-wc-woomercadopago-hook-order-details.php';
-
 		WC_WooMercadoPago_Notices::init_mercadopago_notice();
 
 		// Check for PHP version and throw notice.
@@ -172,10 +148,6 @@ class WC_WooMercadoPago_Init {
 			return;
 		}
 
-		if ( ! in_array( 'gd', get_loaded_extensions(), true ) ) {
-			add_action( 'admin_notices', array( __CLASS__, 'wc_mercado_pago_notify_gd_error' ) );
-		}
-
 		// Load Mercado Pago SDK.
 		require_once dirname( __FILE__ ) . '/sdk/lib/class-mp.php';
 
@@ -187,26 +159,15 @@ class WC_WooMercadoPago_Init {
 			require_once dirname( __FILE__ ) . '/class-wc-woomercadopago-module.php';
 			require_once dirname( __FILE__ ) . '/class-wc-woomercadopago-credentials.php';
 			require_once dirname( __FILE__ ) . '../../admin/notices/class-wc-woomercadopago-review-notice.php';
-			require_once dirname( __FILE__ ) . '../../pix/class-wc-woomercadopago-image-generator.php';
 
 			WC_WooMercadoPago_Module::init_mercado_pago_class();
 			WC_WooMercadoPago_Review_Notice::init_mercadopago_review_notice();
-			WC_WooMercadoPago_Saved_Cards::init_singleton();
-			WC_WooMercadoPago_Image_Generator::init_image_generator_class();
 			self::update_plugin_version();
 
-			new WC_WooMercadoPago_Hook_Order_Details();
 			add_action( 'woocommerce_order_actions', array( __CLASS__, 'add_mp_order_meta_box_actions' ) );
 		} else {
 			add_action( 'admin_notices', array( __CLASS__, 'notify_woocommerce_miss' ) );
 		}
 		add_action( 'woocommerce_settings_checkout', array( __CLASS__, 'mp_show_admin_notices' ) );
-		add_action( 'wp_ajax_mercadopago_validate_credentials', array('WC_WooMercadoPago_Credentials', 'ajax_validate_credentials'));
-
-		add_filter('query_vars', function ( $vars ) {
-			$vars[] = 'wallet_button';
-			return $vars;
-		});
-
 	}
 }

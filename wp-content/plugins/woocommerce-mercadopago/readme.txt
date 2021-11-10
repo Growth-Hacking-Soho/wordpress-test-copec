@@ -2,9 +2,9 @@
 Contributors: mercadopago, mercadolivre, claudiosanches, marcelohama
 Tags: ecommerce, mercadopago, woocommerce
 Requires at least: 4.9.10
-Tested up to: 5.8
+Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 5.5.0
+Stable tag: 5.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,6 @@ To install it, **you don't need to have technical knowledge:** you can follow th
 * Test your store before going into production with our Sandbox environment.
 * **Receive the money** from your sales on the same day.
 * **IMPORTANT:** At the moment the Mercado Envíos service is deactivated.
-* **Mercado Pago customers can use already stored cards** For your customers who use Mercado Pago to buy without having to fill in card details at the store's checkout.
 
 ### Adapted to your business
 
@@ -129,54 +128,6 @@ Set up both the plugin and the checkouts you want to activate on your payment av
 Check out our <a href="https://www.mercadopago.com.br/developers/pt/plugins_sdks/plugins/official/woo-commerce/">official documentation</a> for more information on the specific fields to configure.
 
 == Changelog ==
-= v5.5.0 (19/10/2021) =
-* Features
-- Render pix image from backend for e-mails
-- Added link to terms and conditions of Mercado Pago on checkout screen
-
-* Bug fixes
-- Fixed retry payment
-
-= v5.4.1 (22/09/2021) =
-* Bug fixes
-- On the order page, the payment was fetched with the wrong token
-- When the plugin was updated the checkout mode visually went to test
-
-= 5.4.0 (20/09/2021) =
-* Features
-- Performance improvements
-- Improved status of declined payments
-- Improvements in store test flow
-- Improved text distribution in the Wallet Button alert
-- Inclusion of interest-free installment button in payment settings (PSJ)
-- Inclusion of Pix code on the customer panel for later consultation
-- Inclusion of visual information on the status of the credential
-- Adding more QR Code expiration options to the PIX
-
-* Bug fixes
-- Fix QR Code breaking email layout
-
-= 5.3.1 (12/08/2021) =
-* Bug fixes
-- Adjusted notification url, checking if it's a friendly url or not
-
-= 5.3.0 (10/08/2021) =
-* Features
-- Credentials order on painel
-- The seller can change checkout names
-
-= v5.2.0 (26/07/2021) =
-* Features
-- New payment method Wallet Button (wallet purchase)
-- Added support to PHP 8
-- Added support to PHPUnit
-- Added support to source_news in notification
-
-* Bug fixes
-- Changed pix e-mail template
-- Removed gulp dependency
-- New pre-commit hooks
-
 = v5.1.1 (22/04/2021) =
 * Features
  - Added WooCommerce linter

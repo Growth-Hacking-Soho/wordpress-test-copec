@@ -409,10 +409,10 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 	public function shipments_receiver_address() {
 		return array(
 			'receiver_address' => array(
-				'zip_code'    => html_entity_decode( ( is_object($this->order) && method_exists( $this->order, 'get_shipping_postcode' ) ) ?
-					$this->order->get_shipping_postcode() : $this->order->shipping_postcode ),
-				'street_name' => html_entity_decode( ( is_object($this->order) &&
-					method_exists( $this->order, 'get_id' ) ) ?
+				'zip_code'    => method_exists( $this->order, 'get_id' ) ?
+					$this->order->get_shipping_postcode() : $this->order->shipping_postcode,
+				'street_name' => html_entity_decode(
+					method_exists( $this->order, 'get_id' ) ?
 						$this->order->get_shipping_address_1() . ' ' .
 						$this->order->get_shipping_address_2() . ' ' .
 						$this->order->get_shipping_city() . ' ' .
@@ -423,28 +423,10 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 						$this->order->shipping_state . ' ' .
 						$this->order->shipping_country
 				),
-				'apartment'   => ( is_object($this->order) && method_exists( $this->order, 'get_shipping_address_2' ) ) ?
+				'apartment'   => method_exists( $this->order, 'get_id' ) ?
 					$this->order->get_shipping_address_2() : $this->order->shipping_address_2,
-				'city_name'  => ( is_object($this->order) && method_exists( $this->order, 'get_shipping_city' ) ) ?
-					$this->order->get_shipping_city() : $this->order->shipping_city,
-				'state_name'  => ( is_object($this->order) && method_exists( $this->order, 'get_shipping_state' ) ) ?
-					$this->order->get_shipping_state() : $this->order->shipping_state,
 			),
 		);
-	}
-
-	/**
-	 * Get notification type
-	 *
-	 * @param $notification_url
-	 * @param $notification_class
-	 *
-	 * @return string
-	 */
-	public function get_notification_type( $notification_url, $notification_class ) {
-		$type               = WC_WooMercadoPago_Module::get_notification_type($notification_class);
-		$url_join_character = preg_match('#/wc-api/#', $notification_url) ? '?' : '&';
-		return sprintf('%s%ssource_news=%s', $notification_url, $url_join_character, $type);
 	}
 
 	/**
@@ -457,19 +439,13 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 			$notification_url = $this->payment->custom_domain;
 			// Check if we have a custom URL.
 			if ( empty( $notification_url ) || filter_var( $notification_url, FILTER_VALIDATE_URL ) === false ) {
-				return $this->get_notification_type(
-					WC()->api_request_url( $this->notification_class ),
-					$this->notification_class
-				);
+				return WC()->api_request_url( $this->notification_class );
 			} else {
-				return $this->get_notification_type(
-							WC_WooMercadoPago_Module::fix_url_ampersand(
-								esc_url(
-										$notification_url . '/wc-api/' . $this->notification_class . '/'
-										)
-							),
-							$this->notification_class
-						);
+				return WC_WooMercadoPago_Module::fix_url_ampersand(
+					esc_url(
+						$notification_url . '/wc-api/' . $this->notification_class . '/'
+					)
+				);
 			}
 		}
 	}
@@ -573,7 +549,7 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 		$access_token = get_option( '_mp_access_token_prod', '' );
 		$test_mode    = false;
 
-		if ( 'yes' === $this->payment->get_option_mp( 'checkbox_checkout_test_mode', '' ) ) {
+		if ( 'no' === $this->payment->get_option_mp( 'checkout_credential_prod', '' ) ) {
 			$test_mode    = true;
 			$access_token = get_option( '_mp_access_token_test', '' );
 		}
@@ -584,9 +560,8 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 
 		$analytics = new WC_WooMercadoPago_PreferenceAnalytics();
 
-		$seller  = get_option( '_collector_id_v1', '' );
-		$w       = WC_WooMercadoPago_Module::woocommerce_instance();
-		$user_id = get_current_user_id();
+		$seller = get_option( '_collector_id_v1', '' );
+		$w      = WC_WooMercadoPago_Module::woocommerce_instance();
 		return array(
 			'platform'         => WC_WooMercadoPago_Constants::PLATAFORM_ID,
 			'platform_version' => $w->version,
@@ -600,33 +575,6 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 			'custom_settings'  => $analytics->get_custom_settings(),
 			'ticket_settings'  => $analytics->get_ticket_settings(),
 			'pix_settings'     => $analytics->get_pix_settings(),
-			'seller_website'   => get_option('siteurl'),
-			'billing_address' => array(
-				'zip_code'    => html_entity_decode( is_object($this->order) &&
-				method_exists( $this->order, 'get_billing_postcode' ) ?
-					$this->order->get_billing_postcode() : $this->order->billing_postcode ),
-				'street_name' => html_entity_decode(
-				method_exists( $this->order, 'get_billing_address_1' ) ?
-					$this->order->get_billing_address_1() : $this->order->billing_address_1
-				),
-				'city_name' => html_entity_decode( is_object($this->order) &&
-				method_exists( $this->order, 'get_billing_city' ) ?
-					$this->order->get_billing_city() : $this->order->billing_city
-				),
-				'state_name' => html_entity_decode( is_object($this->order) &&
-				method_exists( $this->order, 'get_billing_state' ) ?
-					$this->order->get_billing_state() : $this->order->billing_state
-				),
-				'country_name' => html_entity_decode( is_object($this->order) &&
-				method_exists( $this->order, 'get_billing_country' ) ?
-					$this->order->get_billing_country() : $this->order->billing_country
-				),
-			),
-			'user' => array(
-				'registered_user' => ( null !== $user_id && '' !== $user_id && 0 !== $user_id ) ? 'yes' : 'no',
-				'user_email' => ( null !== $user_id && '' !== $user_id && 0 !== $user_id ) ? get_userdata( $user_id )->user_email : null,
-				'user_registration_date' => ( null !== $user_id && ' ' !== $user_id && 0 !== $user_id ) ? gmdate( DateTimeInterface::RFC3339_EXTENDED, strtotime(get_userdata($user_id)->user_registered) ) : null,
-			),
 		);
 	}
 
@@ -651,7 +599,7 @@ abstract class WC_WooMercadoPago_Preference_Abstract extends WC_Payment_Gateway 
 	 */
 	public function get_date_of_expiration( $date_expiration ) {
 		if ( '' !== $date_expiration ) {
-			return gmdate( 'Y-m-d\TH:i:s.000O', strtotime( '+' . $date_expiration ) );
+			return gmdate( 'Y-m-d\TH:i:s.000O', strtotime( '+' . $date_expiration . ' days' ) );
 		}
 	}
 }
