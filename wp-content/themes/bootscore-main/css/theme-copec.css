@@ -1,0 +1,20 @@
+.nav-bg-copec {
+background: linear-gradient(89.45deg, #0C6CB5 0%, #0C4876 73.04%) !important;
+}
+
+.f-7 {
+    font-size: 0.8rem;
+}
+
+.fa-white {
+    color: white !important;
+}
+
+@media (max-width: 782px){
+    .offcanvas-body {
+        background: linear-gradient(
+                89.45deg
+                , #0C6CB5 0%, #0C4876 73.04%) !important;
+    }
+
+}
