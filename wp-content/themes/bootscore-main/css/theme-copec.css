@@ -106,3 +106,8 @@ background-color: #3879D6;
 .bkg-location{
     background: linear-gradient(91.6deg, #0C6CB5 1.04%, #0C4876 136.4%);
 }
+
+.woocommerce div.product div.images .flex-control-thumbs {
+    margin-top: 20px;
+;
+}

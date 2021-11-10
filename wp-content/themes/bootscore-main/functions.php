@@ -538,3 +538,38 @@ function custom_wc_checkout_fields_no_label($fields) {
 	}
 	return $fields;
 }
+
+/**
+ * woocommerce_single_product_summary hook
+ *
+ * @hooked woocommerce_template_single_title - 5
+ * @hooked woocommerce_template_single_price - 10
+ * @hooked woocommerce_template_single_excerpt - 20
+ * @hooked woocommerce_template_single_add_to_cart - 30
+ * @hooked woocommerce_template_single_meta - 40
+ * @hooked woocommerce_template_single_sharing - 50
+ */
+
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30);
+add_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 12);
+
+function category_single_product(){
+
+	$product_cats = wp_get_post_terms( get_the_ID(), 'product_cat' );
+
+	if ( $product_cats && ! is_wp_error ( $product_cats ) ){
+
+		$single_cat = array_shift( $product_cats ); ?>
+
+		<span class="badge bg-light text-dark"><?php echo $single_cat->name; ?></span>
+
+	<?php }
+}
+add_action( 'woocommerce_before_shop_loop_item_title', 'category_single_product', 25 );
+
+add_action( 'woocommerce_archive_description', 'extra_button_on_product_category_archives', 12 );
+function extra_button_on_product_category_archives() {
+	if ( is_product_category('bracelets') ) {
+		echo '<a class="button" href="www.test.com">Extra Button</a>';
+	}
+}
