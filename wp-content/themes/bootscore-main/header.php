@@ -11,156 +11,217 @@
  */
 
 ?>
-<!doctype html>
+    <!doctype html>
 <html <?php language_attributes(); ?>>
 
-<head>
-  <meta charset="<?php bloginfo('charset'); ?>">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="profile" href="https://gmpg.org/xfn/11">
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/favicon-16x16.png">
-  <link rel="manifest" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/site.webmanifest">
-  <link rel="mask-icon" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/safari-pinned-tab.svg" color="#0d6efd">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#ffffff">
-  <?php wp_head(); ?>
-</head>
+    <head>
+        <meta charset="<?php bloginfo( 'charset' ); ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="profile" href="https://gmpg.org/xfn/11">
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/site.webmanifest">
+        <link rel="mask-icon" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon/safari-pinned-tab.svg" color="#0d6efd">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+		<?php wp_head(); ?>
+    </head>
 
 <body <?php body_class(); ?>>
-    
-  <?php wp_body_open(); ?>
 
-  <div id="to-top"></div>
+<?php wp_body_open(); ?>
 
-  <div id="page" class="site">
+    <div id="to-top"></div>
+
+<div id="page" class="site">
 
     <header id="masthead" class="site-header">
 
-      <div class="fixed-top bg-light">
+        <div class="fixed-top bg-light">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-light nav-bg-copec">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Bootstrap 5 Nav Walker Main Menu -->
+						<?php
+						wp_nav_menu( array(
+							'theme_location' => 'main-menu-top',
+							'container'      => false,
+							'menu_class'     => '',
+							'fallback_cb'    => '__return_false',
+							'items_wrap'     => '<ul id="bootscore-navbar" class="f-7 navbar-nav ms-auto %2$s">%3$s</ul>',
+							'depth'          => 2,
+							'walker'         => new bootstrap_5_wp_nav_menu_walker()
+						) );
+						?>
+                        <!-- Bootstrap 5 Nav Walker Main Menu End -->
+                        <span class="navbar-text">
+                                <div class="icons-header">
 
-        <nav id="nav-main" class="navbar navbar-expand-lg navbar-light">
+                                <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-instagram fa-stack-1x"></i>
+                                </span>
 
-          <div class="container">
+                                    <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
+                                </span>
+                                    <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-youtube fa-stack-1x"></i>
+                                </span>
 
-            <!-- Navbar Brand -->
-            <a class="navbar-brand xs d-md-none" href="<?php echo esc_url(home_url()); ?>"><img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/img/logo/logo-sm.svg" alt="logo" class="logo xs"></a>
-            <a class="navbar-brand md d-none d-md-block" href="<?php echo esc_url(home_url()); ?>"><img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/img/logo/logo.svg" alt="logo" class="logo md"></a>
+                                    <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin-in fa-stack-1x"></i>
+                                </span>
 
-            <!-- Offcanvas Navbar -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-navbar">
-              <div class="offcanvas-header bg-light">
-                <span class="h5 mb-0"><?php esc_html_e('Menu', 'bootscore'); ?></span>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                <!-- Bootstrap 5 Nav Walker Main Menu -->
-                <?php
-                wp_nav_menu(array(
-                  'theme_location' => 'main-menu',
-                  'container' => false,
-                  'menu_class' => '',
-                  'fallback_cb' => '__return_false',
-                  'items_wrap' => '<ul id="bootscore-navbar" class="navbar-nav ms-auto %2$s">%3$s</ul>',
-                  'depth' => 2,
-                  'walker' => new bootstrap_5_wp_nav_menu_walker()
-                ));
-                ?>
-                <!-- Bootstrap 5 Nav Walker Main Menu End -->
-              </div>
-            </div>
+                                    <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitch fa-stack-1x"></i>
+                                </span>
 
-            <div class="header-actions d-flex align-items-center">
+                                    <span class="fa-stack fa-white" style="vertical-align: top;">
+                                    <i class="far fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-spotify fa-stack-1x"></i>
+                                </span>
 
-              <!-- Top Nav Widget -->
-              <div class="top-nav-widget">
-                <?php if (is_active_sidebar('top-nav')) : ?>
-                  <div>
-                    <?php dynamic_sidebar('top-nav'); ?>
-                  </div>
-                <?php endif; ?>
-              </div>
+                                </div>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+            <nav id="nav-main" class="navbar navbar-expand-lg navbar-dark nav-bg-copec">
 
-              <!-- Search Toggler -->
-              <button class="btn btn-outline-secondary ms-1 ms-md-2 top-nav-search-md" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-search" aria-expanded="false" aria-controls="collapse-search">
-                <i class="fas fa-search"></i>
-              </button>
+                <div class="container">
 
-              <!-- User Toggler -->
-              <button class="btn btn-outline-secondary ms-1 ms-md-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-user" aria-controls="offcanvas-user">
-                <i class="fas fa-user"></i>
-              </button>
+                    <!-- Navbar Toggler -->
+                    <button class="btn d-lg-none ms-1 ms-md-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar">
+                        <i class="fas fa-bars fa-white"></i>
+                    </button>
+                    <!-- Navbar Brand -->
+                    <a class="navbar-brand xs d-md-none" href="<?php echo esc_url( home_url() ); ?>"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/img/logo/logo-mobil.png" width="120" alt="logo" class="logo xs"></a>
+                    <a class="navbar-brand md d-none d-md-block" href="<?php echo esc_url( home_url() ); ?>"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/img/logo/logo-mobil.png" width="220" alt="logo" class="logo md" style="position: absolute; bottom: 80%;"></a>
 
-              <!-- Mini Cart Toggler -->
-              <button class="btn btn-outline-secondary ms-1 ms-md-2 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-cart" aria-controls="offcanvas-cart">
-                <i class="fas fa-shopping-bag"></i>
-                <?php if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-                  $count = WC()->cart->cart_contents_count;
-                ?>
-                  <span class="cart-content">
-                    <?php if ($count > 0) { ?>
-                      <?php echo esc_html($count); ?>
-                    <?php
+                    <!-- Offcanvas Navbar -->
+                    <div class="offcanvas offcanvas-end" tabindex="1" id="offcanvas-navbar">
+                        <div class="offcanvas-header bg-dark">
+<!--                            <span class="h5 mb-0 text-white">--><?php //esc_html_e( 'Menu', 'bootscore' ); ?><!--</span>-->
+                            <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/img/logo/logo-white.png" width="120" alt="logo" class="logo xs">
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+                        </div>
+                        <div class="offcanvas-body">
+                            <!-- Bootstrap 5 Nav Walker Main Menu -->
+							<?php
+							wp_nav_menu( array(
+								'theme_location' => 'main-menu',
+								'container'      => false,
+								'menu_class'     => '',
+								'fallback_cb'    => '__return_false',
+								'items_wrap'     => '<ul id="bootscore-navbar" class="px-3 navbar-nav ms-auto %2$s">%3$s</ul>',
+								'depth'          => 2,
+								'walker'         => new bootstrap_5_wp_nav_menu_walker()
+							) );
+							?>
+                            <!-- Bootstrap 5 Nav Walker Main Menu End -->
+
+                        </div>
+                    </div>
+                    <i class="fas fa-grip-lines-vertical fa-white px-3 d-none d-sm-block"></i>
+                    <div class="header-actions d-flex align-items-center">
+
+                        <!-- Top Nav Widget -->
+                        <div class="top-nav-widget">
+							<?php if ( is_active_sidebar( 'top-nav' ) ) : ?>
+                                <div>
+									<?php dynamic_sidebar( 'top-nav' ); ?>
+                                </div>
+							<?php endif; ?>
+                        </div>
+
+                        <!-- Search Toggler -->
+                        <button class="btn btn-outline-secondary ms-1 ms-md-2 top-nav-search-md" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-search" aria-expanded="false" aria-controls="collapse-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                        <!-- User Toggler -->
+                        <a class="text-decoration-none ms-2 ms-md-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-user" aria-controls="offcanvas-user">
+							<?php if ( is_user_logged_in() ) : ?>
+                                <i class="fas fa-user fa-white"></i> <a class="text-decoration-none ms-2 ms-md-2 text-white d-none d-sm-block"> Mi cuenta</a>
+							<?php else : ?>
+                                <i class="fas fa-user fa-white"></i> <a class="text-decoration-none ms-2 ms-md-2 text-white d-none d-sm-block"> Iniciar sesión</a>
+							<?php endif; ?>
+                        </a>
+
+                        <!-- Mini Cart Toggler -->
+                        <button class="btn ms-1 ms-md-2 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-cart" aria-controls="offcanvas-cart">
+                            <i class="fas fa-shopping-cart fa-white"></i>
+							<?php if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+								$count = WC()->cart->cart_contents_count;
+								?>
+                                <span class="cart-content">
+                    <?php if ( $count > 0 ) { ?>
+	                    <?php echo esc_html( $count ); ?>
+	                    <?php
                     }
-                    ?></span>
-                <?php } ?>
-              </button>
+                    ?>
+                  </span>
+							<?php } ?>
+                        </button>
 
-              <!-- Navbar Toggler -->
-              <button class="btn btn-outline-secondary d-lg-none ms-1 ms-md-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar">
-                <i class="fas fa-bars"></i>
-              </button>
 
-            </div><!-- .header-actions -->
 
-          </div><!-- .container -->
+                    </div><!-- .header-actions -->
 
-        </nav><!-- .navbar -->
+                </div><!-- .container -->
 
-        <!-- Top Nav Search Collapse -->
-        <div class="collapse container" id="collapse-search">
-          <?php if (is_active_sidebar('top-nav-search')) : ?>
-            <div class="mb-2">
-              <?php dynamic_sidebar('top-nav-search'); ?>
+            </nav><!-- .navbar -->
+
+            <!-- Top Nav Search Collapse -->
+            <div class="collapse container" id="collapse-search">
+				<?php if ( is_active_sidebar( 'top-nav-search' ) ) : ?>
+                    <div class="mb-2">
+						<?php dynamic_sidebar( 'top-nav-search' ); ?>
+                    </div>
+				<?php endif; ?>
             </div>
-          <?php endif; ?>
-        </div>
 
-      </div><!-- .fixed-top .bg-light -->
+        </div><!-- .fixed-top .bg-light -->
 
-      <!-- offcanvas user -->
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-user">
-        <div class="offcanvas-header bg-light">
-          <span class="h5 mb-0"><?php esc_html_e('Account', 'bootscore'); ?></span>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="my-offcancas-account">
-            <?php include get_template_directory() . '/woocommerce/myaccount/my-account-offcanvas.php'; ?>
-          </div>
-        </div>
-      </div>
-
-      <!-- offcanvas cart -->
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-cart">
-        <div class="offcanvas-header bg-light">
-          <span class="h5 mb-0"><?php esc_html_e('Cart', 'bootscore'); ?></span>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body p-0">
-          <div class="cart-loader bg-white position-absolute end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
-            <div class="loader-icon ">
-              <div class="spinner-border text-primary"></div>
+        <!-- offcanvas user -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-user">
+            <div class="offcanvas-header bg-light">
+                <span class="h5 mb-0"><?php esc_html_e( 'Account', 'bootscore' ); ?></span>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-          </div>
-          <div class="cart-list">
-            <div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
-          </div>
+            <div class="offcanvas-body">
+                <div class="my-offcancas-account">
+					<?php include get_template_directory() . '/woocommerce/myaccount/my-account-offcanvas.php'; ?>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- offcanvas cart -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-cart">
+            <div class="offcanvas-header bg-light">
+                <span class="h5 mb-0"><?php esc_html_e( 'Cart', 'bootscore' ); ?></span>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <div class="cart-loader bg-white position-absolute end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+                    <div class="loader-icon ">
+                        <div class="spinner-border text-primary"></div>
+                    </div>
+                </div>
+                <div class="cart-list">
+                    <div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
+                </div>
+            </div>
+        </div>
 
     </header><!-- #masthead -->
 
-    <?php bootscore_ie_alert(); ?>
+<?php bootscore_ie_alert(); ?>
