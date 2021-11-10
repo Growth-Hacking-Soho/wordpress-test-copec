@@ -1,5 +1,5 @@
 .nav-bg-copec {
-background: linear-gradient(89.45deg, #0C6CB5 0%, #0C4876 73.04%) !important;
+    background: linear-gradient(89.45deg, #0C6CB5 0%, #0C4876 73.04%) !important;
 }
 
 .f-7 {
@@ -10,11 +10,99 @@ background: linear-gradient(89.45deg, #0C6CB5 0%, #0C4876 73.04%) !important;
     color: white !important;
 }
 
-@media (max-width: 782px){
+@media (max-width: 782px) {
     .offcanvas-body {
         background: linear-gradient(
-                89.45deg
-                , #0C6CB5 0%, #0C4876 73.04%) !important;
+                89.45deg, #0C6CB5 0%, #0C4876 73.04%) !important;
     }
 
+}
+
+.bg-cart-gray {
+    background: linear-gradient(180deg, #FFFFFF 0%, #EEEEEE 100%);
+}
+
+.qty-mincart {
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.fa-gray {
+    color: #586770 !important;
+}
+
+.carousel-tienda-copec {
+    position: absolute;
+    bottom: 40%;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #fff;
+    text-align: left;
+    left: 5%;
+
+}
+
+@media (max-width: 782px) {
+    .carousel-tienda-copec-mobile {
+        position: absolute;
+        bottom: 0%;
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+        color: #fff;
+        text-align: center;
+    }
+}
+
+.bkg-categories-cope {
+    background: linear-gradient(89.45deg, #0C6CB5 0%, #0C4876 73.04%);
+
+}
+
+.btn-no-round {
+    border-radius: 0rem !important;
+}
+
+.owl-dots .owl-dot span {
+    width: 50px;
+    height: 2px;
+    margin: 5px 7px;
+    background: #D6D6D6;
+    display: block;
+    -webkit-backface-visibility: visible;
+    transition: opacity .2s ease;
+    border-radius: 30px;
+}
+
+.owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: #869791;
+}
+
+@media (max-width: 782px) {
+    .bkg-categories-cope {
+        background: transparent !important;
+    }
+
+    .bkg-categories-cope h2 {
+        color: #2559A7 !important;
+        margin: 20px;
+    }
+    .btn-outline-light-cat{
+background-color: #3879D6;
+    }
+}
+
+.text-secondary-copec {
+    color: #2559A7;
+}
+
+.bkg-secondary-copec-gray{
+    background-color: #F7F7F7;
+}
+
+.bkg-card-aboutus{
+    background: linear-gradient(91.6deg, #0C6CB5 1.04%, #0C4876 136.4%);
+}
+
+.bkg-location{
+    background: linear-gradient(91.6deg, #0C6CB5 1.04%, #0C4876 136.4%);
 }

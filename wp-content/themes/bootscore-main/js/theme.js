@@ -106,4 +106,23 @@ jQuery(function ($) {
 
   // Alert links
   $('.alert a').addClass('alert-link');
+
+  $('.owl-wc-categories').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:false,
+    dots:true,
+    responsive:{
+      0:{
+        items:2
+      },
+      600:{
+        items:3
+      },
+      1000:{
+        items:6
+      }
+    }
+  });
+
 }); // jQuery End
